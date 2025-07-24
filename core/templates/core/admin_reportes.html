@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+{% block title %}Gestión de Reportes{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4 text-center">Gestión de Reportes de Contenido</h2>
+
+    {% if reportes %}
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Contenido</th>
+                    <th>Usuario</th>
+                    <th>Motivo</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Decisión</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reporte in reportes %}
+                <tr>
+                    <td>{{ reporte.id }}</td>
+                    <td>{{ reporte.contenido.titulo }}</td>
+                    <td>{{ reporte.usuario.username }}</td>
+                    <td>{{ reporte.motivo }}</td>
+                    <td>{{ reporte.fecha }}</td>
+                    <td>{{ reporte.get_estado_display }}</td>
+                    <td>{{ reporte.decision|default:"Sin decisión" }}</td>
+                    <td>
+                        <a href="{% url 'resolver_reporte' reporte.id %}" class="btn btn-sm btn-primary">Resolver</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info">No hay reportes pendientes.</div>
+    {% endif %}
+</div>
+{% endblock %}

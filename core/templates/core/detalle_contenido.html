@@ -1,0 +1,63 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Detalle de Contenido{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card mb-4 shadow-sm">
+        {% if contenido.tipo == 'imagen' %}
+            {% if ya_comprado %}
+                <img src="{{ contenido.archivo.url }}" class="card-img-top" alt="{{ contenido.titulo }}">
+            {% else %}
+                <img src="{% static 'core/img/bloqueado.png' %}" class="card-img-top" alt="Contenido bloqueado">
+            {% endif %}
+        {% else %}
+            {% if ya_comprado %}
+                <video controls class="w-100">
+                    <source src="{{ contenido.archivo.url }}" type="video/mp4">
+                    Tu navegador no soporta el video.
+                </video>
+            {% else %}
+                <img src="{% static 'core/img/bloqueado.png' %}" class="card-img-top" alt="Contenido bloqueado">
+            {% endif %}
+        {% endif %}
+
+        <div class="card-body">
+            <h4 class="card-title">{{ contenido.titulo }}</h4>
+            <p class="card-text">{{ contenido.descripcion }}</p>
+            <p class="text-muted">Precio: ${{ contenido.precio }}</p>
+            <p class="text-muted"><small>Los precios en esta plataforma van desde los $300 a los $25.000.</small></p>
+            <p class="text-muted">Subido por: {{ contenido.usuario.username }}</p>
+
+            {% if not ya_comprado %}
+                <form method="POST" action="{% url 'procesar_compra' contenido.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Comprar</button>
+                </form>
+            {% else %}
+                <div class="alert alert-success mt-3">Ya has comprado este contenido ✅</div>
+
+
+            {% if user.is_authenticated and user.userprofile.rol == 'suscriptor' %}
+                <a href="{% url 'reportar_contenido' contenido.id %}" class="btn btn-warning mt-3">
+                    Reportar Contenido
+                </a>
+                
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <a href="{% url 'home' %}" class="btn btn-secondary">Volver al inicio</a>
+</div>
+{% endblock %}

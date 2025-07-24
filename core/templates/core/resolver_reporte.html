@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+{% block title %}Resolver Reporte{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4">Resolver Reporte #{{ reporte.id }}</h2>
+
+    <p><strong>Contenido:</strong> {{ reporte.contenido.titulo }}</p>
+    <p><strong>Motivo:</strong> {{ reporte.motivo }}</p>
+    <p><strong>Fecha:</strong> {{ reporte.fecha }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="decision" class="form-label">Decisión Administrativa</label>
+            <textarea name="decision" id="decision" class="form-control" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Marcar como Resuelto</button>
+        <a href="{% url 'admin_reportes' %}" class="btn btn-secondary">Volver</a>
+    </form>
+</div>
+{% endblock %}

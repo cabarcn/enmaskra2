@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Mis Compras{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Contenido adquirido</h2>
+
+    {% if compras %}
+        <div class="row">
+            {% for compra in compras %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        {% if compra.contenido.tipo == 'imagen' %}
+                            <img src="{{ compra.contenido.archivo.url }}" class="card-img-top" alt="{{ compra.contenido.titulo }}">
+                        {% else %}
+                            <video controls class="w-100">
+                                <source src="{{ compra.contenido.archivo.url }}" type="video/mp4">
+                                Tu navegador no soporta el video.
+                            </video>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ compra.contenido.titulo }}</h5>
+                            <p class="card-text">{{ compra.contenido.descripcion }}</p>
+                            <p class="text-muted">Comprado el: {{ compra.fecha|date:"d/m/Y H:i" }}</p>
+                            <a href="{% url 'detalle_contenido' compra.contenido.id %}" class="btn btn-primary btn-sm w-100">Ver contenido</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">Aún no has comprado contenido.</p>
+    {% endif %}
+</div>
+{% endblock %}

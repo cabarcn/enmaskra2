@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Contenido disponible 🎬</h2>
+
+    {% if contenidos %}
+        <div class="row">
+            {% for contenido in contenidos %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow">
+                        {% if user.is_authenticated and contenido.id in comprados %}
+                        {% if contenido.tipo == 'imagen' %}
+                            <img src="{{ contenido.archivo.url }}" class="card-img-top" alt="{{ contenido.titulo }}">
+                        {% else %}
+                            <video controls class="w-100">
+                                <source src="{{ contenido.archivo.url }}" type="video/mp4">
+                                Tu navegador no soporta el video.
+                            </video>
+                        {% endif %}
+                        {%else%}
+                        <img src="{% static 'core/img/bloqueado.png' %}" class="card-img-top" alt="Contenido bloqueado">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ contenido.titulo }}</h5>
+                            <p class="card-text">{{ contenido.descripcion|truncatewords:15 }}</p>
+                            <p class="text-muted">Precio: ${{ contenido.precio }}</p>
+                            <p class="text-muted">De $3000 hasta $25.000</p>
+                            <a href="{% url 'detalle_contenido' contenido.id %}" class="btn btn-outline-primary w-100">Ver más</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">No hay contenido disponible aún.</p>
+    {% endif %}
+
+    <hr class="my-5">
+
+    <h3 class="text-center mb-4">Modelos destacados 💫</h3>
+    <div class="row">
+        {% for modelo in modelos %}
+            <div class="col-md-4 mb-4 offset-md-2">
+                <div class="card shadow">
+                    <img src="{% static modelo.imagen %}" class="card-img-top" alt="{{ modelo.nombre }}">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ modelo.nombre }}</h5>
+                        <p class="card-text">{{ modelo.descripcion }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

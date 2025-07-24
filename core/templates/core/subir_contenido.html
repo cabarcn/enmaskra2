@@ -1,0 +1,40 @@
+{% extends "core/base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Subir Contenido{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Subir Contenido</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="{{ form.titulo.id_for_label }}" class="form-label">Título</label>
+            {{ form.titulo|add_class:"form-control" }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.descripcion.id_for_label }}" class="form-label">Descripción</label>
+            {{ form.descripcion|add_class:"form-control" }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.tipo.id_for_label }}" class="form-label">Tipo de contenido</label>
+            {{ form.tipo|add_class:"form-select" }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.archivo.id_for_label }}" class="form-label">Archivo</label>
+            {{ form.archivo|add_class:"form-control" }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.precio.id_for_label }}" class="form-label">Precio CLP$</label>
+            {{ form.precio|add_class:"form-control" }}
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Subir Contenido</button>
+    </form>
+</div>
+{% endblock %}

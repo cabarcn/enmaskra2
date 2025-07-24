@@ -1,0 +1,17 @@
+# Ignorar carpetas y archivos innecesarios en proyectos Python/Django
+
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.db
+*.log
+venv/
+env/
+ENV/
+pyvenv/
+logs/
+media/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+{% block title %}Editar Usuario - enMASKra2{% endblock %}
+{% block content %}
+<div class="glass-card mt-5">
+    <h4 class="text-center text-light-emphasis mb-4">
+        <i class="fa-solid fa-user-pen me-2"></i>Editar Usuario: {{ usuario.username }}
+    </h4>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label text-dark-emphasis">Nombre de Usuario</label>
+            <input type="text" name="username" value="{{ usuario.username }}" class="form-control rounded-4" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label text-dark-emphasis">Correo Electrónico</label>
+            <input type="email" name="email" value="{{ usuario.email }}" class="form-control rounded-4" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label text-dark-emphasis">Rol</label>
+            <select name="rol" class="form-select rounded-4" required>
+                <option value="creador" {% if perfil.rol == 'creador' %}selected{% endif %}>Creador de contenido</option>
+                <option value="suscriptor" {% if perfil.rol == 'suscriptor' %}selected{% endif %}>Suscriptor</option>
+                <option value="administrador" {% if perfil.rol == 'administrador' %}selected{% endif %}>Administrador</option>
+            </select>
+        </div>
+
+        <div class="form-check form-switch mb-4">
+            <input class="form-check-input" type="checkbox" name="is_verified" id="verificado" {% if perfil.is_verified %}checked{% endif %}>
+            <label class="form-check-label text-dark-emphasis" for="verificado"> Verificación de edad e identidad</label>
+        </div>
+
+        <div class="row g-2 justify-content-center">
+            <div class="col-12 col-md-6 d-grid">
+                <a href="{% url 'admin_panel' %}" class="btn btn-secondary">
+                    <i class="fa-solid fa-arrow-left me-2"></i>Cancelar
+                </a>
+            </div>
+            <div class="col-12 col-md-6 d-grid">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk me-2"></i>Guardar Cambios
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
